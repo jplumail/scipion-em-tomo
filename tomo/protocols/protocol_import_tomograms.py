@@ -155,7 +155,14 @@ class ProtImportTomograms(ProtTomoImportFiles, ProtTomoImportAcquisition):
 
             if fileName.endswith(':mrc'):
                 fileName = fileName[:-4]
-            createAbsLink(abspath(fileName), abspath(self._getExtraPath(newFileName)))
+            if fileName.endswith('tiff'):
+                newFileName = newFileName.replace('tiff', 'mrc')
+                imgh.convert(abspath(fileName), abspath(self._getExtraPath(newFileName)))
+            elif fileName.endswith('tif'):
+                newFileName = newFileName.replace('tif', 'mrc')
+                imgh.convert(abspath(fileName), abspath(self._getExtraPath(newFileName)))
+            else:
+                createAbsLink(abspath(fileName), abspath(self._getExtraPath(newFileName)))
             tomo.setAcquisition(self._extractAcquisitionParameters(fileName))
 
             if n == 1:  # One volume per file
